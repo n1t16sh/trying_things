@@ -1,0 +1,57 @@
+class contact_book:
+    def __init__(self):
+        self.book = dict()
+        cmnd = input("""welcome to CONTACTS .
+                press 1 to view your contacts
+                press 2 to add a new contact
+                press 3 to delete a contact
+                press 4 to favorite a contact
+                press 5 to exit\n-->  """)
+
+        self.press(cmnd)
+    
+    def press(self,cmnd):
+        if(cmnd=="1"):
+            self.view()
+        elif(cmnd=="2"):
+            self.add()
+        elif(cmnd=="3"):
+            self.delete()
+        elif(cmnd=="4"):
+            self.favorite()
+        elif(cmnd=="5"):
+            print("........exit.......")
+        else:
+            print("invalid option chosen")
+
+    def view(self):
+        if not self.book.items():
+            print("you got 0 friends , loner.")
+        else:
+            for x,y in self.book.items():
+                favorite ="favorite" if y["favorite"] else ""
+                print(f"{x} : {y['number']} :{favorite}")
+
+    def add(self):
+        name = input("enter the name : ")
+        if name in self.book:
+            print("name is already in the contacts")
+        else:
+            num = input("enter the number")
+            self.book[name]={"number" : num, "favorite":False}
+
+    def delete(self):
+        name = input("enter the name you want to delete : ")
+        if name in self.book:
+            self.book.pop(name)
+            print(f"{name} has been successfully removed ")
+        else:
+            print(f"{name}could not be found in contact")
+
+    def favorite(self):
+        name = input("enter the name u want to favorite : ")
+        if name in self.book:
+            self.book[name]["favorite"]=True
+            print(f"{name} has been added to your favorite list ")
+        else:
+            print(f"{name} was not in your contact")
