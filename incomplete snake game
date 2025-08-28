@@ -1,0 +1,63 @@
+#include<cstdint>
+#include<iostream>
+#include<vector>
+#include<stdlib.h>
+#include<ctime>
+#define MAX 10
+using namespace std;
+
+vector <int>board[MAX][MAX];
+vector <pair<int,int>>p;
+int o=1,o2=1;
+int cmnd=0;
+int row=1,clm=1;
+
+void game(){
+    while(o2!=0){
+        srand(time(0));
+        int x=rand();
+        int y=rand();
+        while(o==1){
+            for(int i=0;i<MAX;i++){
+                for(int j=0;j<MAX;j++){
+                    if(i==0||i==MAX-1||j==0||j==MAX-1){
+                        cout<<" # ";
+                    }else if(i==row&&j==clm){
+                        cout<<"(:>";
+                    }else{
+                        cout<<"   ";
+                    }
+                    if(row==x&&clm==y){
+                        
+                    }
+                }
+                cout<<endl;
+            }
+            cout<<"where to go";
+            cin>>cmnd;
+            if(cmnd==8){
+                row=row-1;
+            }else if(cmnd==6){
+                clm=clm+1;
+            }else if(cmnd==4){
+                clm=clm-1;
+            }else if(cmnd==2){
+                row=row+1;
+            }else{
+                cout<<"wrong command";
+            }
+            if(row==0||row==MAX-1||clm==0||clm==MAX-1){
+                cout<<" game over ";
+                o=0;
+                o2=0;
+            }
+        }
+
+    }
+}
+
+int main(){
+    game();
+
+    
+}
