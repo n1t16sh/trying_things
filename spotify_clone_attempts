@@ -1,0 +1,188 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+class song{
+    public:
+    string name;
+    string url;
+    string singer;
+    
+    song(string n, string u , string mic): name(n),url(u),singer(mic) {}
+     
+};
+
+struct Node{
+    song s ;
+    Node *next;
+
+    Node(song g):s(g),next(nullptr) {}
+};
+
+class playlist{
+    private:
+    string list_name;
+    Node *top;
+
+    public:
+    playlist(string name): list_name(name),top(nullptr){}
+
+    string get_name(){
+        return list_name;
+    }
+
+    void add_song(song s){
+        Node *new_node=new Node(s);
+        if(new_node==NULL){
+            cout<<"ni mili jghe";
+        }
+        new_node->next=top;
+        top=new_node;
+        cout<<"song "<<top->s.name<<" has been added";
+    }
+
+    void remove(){
+        if(top==nullptr){
+            cout<<"the playlist is empty";
+            return;
+        }
+        cout<<"song "<<top->s.name<<" has been removed";
+        top=top->next;
+    }
+
+    void show_songs(){
+        if(top==nullptr){
+            cout<<"the play list is empty";
+            return;
+        }
+        Node *temp=top;
+        cout<<"songs in playlist :"<<endl;
+        cout<<"-----------------------------------------------------"<<endl;
+        while(temp!=nullptr){
+            cout<<temp->s.name<<" by "<<temp->s.singer<<endl;
+            temp=temp->next;
+            cout<<"-----------------------------------------------------"<<endl;
+        }
+    }
+
+};
+
+class spotify{
+    private:
+    vector<playlist> playlists;
+    public:
+    void create_playlist(string n){
+        playlists.push_back(playlist(n));
+        cout<<"playlist "<<n<<" created!"<<endl;
+    }
+
+    void showPlaylists(){
+        if(playlists.empty()){
+            cout<<"the playlist is empty";
+            return;
+        }
+        cout<<"available songs: "<<endl;
+        for(int i=0;i<playlists.size();i++){
+            cout<<i+1<<": "<<playlists[i].get_name()<<endl;
+        }
+    }
+
+    void add_to_playlist(int ind, song s){
+        if(ind<0 || ind>=playlists.size()){
+            cout<<"invalid playlist index";
+            return;
+        }
+        playlists[ind].add_song(s);
+    }
+
+    void songs_in(int ind){
+        if(ind<0 || ind>=playlists.size()){
+            cout<<"invalid playlist index";
+            return;
+        }
+        playlists[ind].show_songs();
+    }
+
+    void remove_song(int ind){
+        if(ind<0 || ind>=playlists.size()){
+            cout<<"invalid playlist index";
+            return;
+        }
+        playlists[ind].remove();
+    }
+
+    void show_songs_in(int ind){
+        if(ind<0 || ind>=playlists.size()){
+            cout<<"invalid playlist index";
+            return;
+        }
+        playlists[ind].show_songs();
+    }
+
+};
+
+int main(){
+    spotify myspot;
+    int choice;
+
+    while(true){
+        cout<<"---------------spotify menu---------------"<<endl;
+        cout << "1. Create Playlist\n";
+        cout << "2. Show Playlists\n";
+        cout << "3. Add Song to Playlist\n";
+        cout << "4. Show Songs in Playlist\n";
+        cout << "5. Remove Song from Playlist\n";
+        cout << "6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string name;
+            cout << "Enter playlist name: ";
+            cin >> name;
+            myspot.create_playlist(name);
+        } 
+        else if (choice == 2) {
+            myspot.showPlaylists();
+        }
+        else if (choice == 3) {
+            myspot.showPlaylists();
+            int index;
+            cout << "Enter playlist number: ";
+            cin >> index;
+            cin.ignore();
+
+            string name, singer, url;
+            cout << "Song name: "; getline(cin, name);
+            cout << "Singer: "; getline(cin, singer);
+            cout << "URL: "; getline(cin, url);
+
+            song l(name, singer, url);
+            myspot.add_to_playlist(index-1, l);
+        }
+        else if (choice == 4) {
+            myspot.showPlaylists();
+            int index;
+            cout << "Enter playlist number: ";
+            cin >> index;
+            myspot.show_songs_in(index-1);
+        }
+        else if (choice == 5) {
+            myspot.showPlaylists();
+            int index;
+            cout << "Enter playlist number: ";
+            cin >> index;
+            myspot.remove_song(index-1);
+        }
+        else if (choice == 6) {
+            break;
+        }
+        else {
+            cout << "Invalid choice!\n";
+        }
+    }
+
+    return 0;
+    
+}
