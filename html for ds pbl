@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coding Question Recommender</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Coding Question Recommender</h1>
+        <form id="questionForm">
+            <label for="topic">Select Topic:</label>
+            <select id="topic" name="topic">
+                <option value="arrays">Arrays</option>
+                <option value="strings">Strings</option>
+                <option value="trees">Trees</option>
+            </select>
+            <button type="submit">Get Question</button>
+        </form>
+        <div id="question">
+            <!-- Recommended question appears here -->
+        </div>
+    </div>
+</body>
+<script>
+document.getElementById('questionForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const topic = document.getElementById('topic').value;
+    const response = await fetch('/recommend', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({topic})
+    });
+    const data = await response.json();
+    document.getElementById('question').innerHTML = `<h3>Recommended:</h3><p>${data.question}</p>`;
+};
+</script>
+</html>
